@@ -9,6 +9,7 @@ import {
     createRoutesFromElements,
 } from "react-router-dom";
 import MainLayout from "./layout/MainLayout.tsx";
+import { PopupProvider } from "./context/PopupContext.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,6 +21,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <PopupProvider>
+            <RouterProvider router={router} />
+        </PopupProvider>
     </React.StrictMode>
 );
