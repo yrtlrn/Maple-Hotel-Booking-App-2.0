@@ -4,11 +4,19 @@ import { connectDB } from "./config/dbConfig";
 //Middleware
 import { notFound, createError } from "./middleware/errorMiddleware";
 import userRouter from "./routes/userRoutes";
+import cors from "cors";
 
 const app = express();
-// Express Middleware
+
+// Middleware Uses
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+    cors({
+        credentials: true,
+        origin: process.env.FRONTEND_URL,
+    })
+);
 
 app.use("/api/v1/users", userRouter);
 
