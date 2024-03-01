@@ -2,29 +2,38 @@ import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import User from "../model/userModel";
 
+declare module "express-session" {
+    export interface SessionData {
+        authorized: boolean;
+        username: string;
+    }
+}
+
 // DESC     login the user
 // MTH      POST /api/v1/users/login
 // ACC      Public
-const loginUser = asyncHandler(async(req: Request, res: Response) => {
+const loginUser = asyncHandler(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
 
-    const {email,password} = req.body
-
-    const user = await User.findOne({email})
+    const user = await User.findOne({ email });
 
     if (!user) {
-        res.status(404)
-        throw new Error("User does not exist")
+        res.status(404);
+        throw new Error("User does not exist");
     }
 
     if (await user.matchPassword(password)) {
         // update session
         // auth user
-        res.status(200).json({message: 'Login In Successful'})
+        req.session.authorized = true;
+        res.status(200).json({
+            message: "Login In Successful",
+        });
     } else {
-        res.status(422)
-        throw new Error("Email or password does not match")
+        res.status(422);
+        throw new Error("Email or password does not match");
     }
-})
+});
 
 // DESC     add new user
 // MTH      POST /api/v1/users/signup

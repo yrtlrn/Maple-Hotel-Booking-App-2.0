@@ -10,6 +10,7 @@ const loginUser = async (data: userLoginProps) => {
             "content-type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
     });
 
     const resBody = await response.json();
@@ -26,6 +27,7 @@ const signupUser = async (data: userSignupProps) => {
             "content-type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
     });
 
     const resBody = await response.json();

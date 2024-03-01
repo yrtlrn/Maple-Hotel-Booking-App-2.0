@@ -13,11 +13,16 @@ import { PopupProvider } from "./context/PopupContext.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClientProvider, QueryClient } from "react-query";
+import AuthCheck from "./component/single/AuthCheck.tsx";
+import VerifyPage from "./pages/VerifyPage.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<MainLayout />}>
             <Route index element={<App />} />
+            <Route path="/auth" element={<AuthCheck />}>
+                <Route index element={<VerifyPage />} />
+            </Route>
         </Route>
     )
 );

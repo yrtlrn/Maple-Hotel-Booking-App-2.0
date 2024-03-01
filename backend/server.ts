@@ -1,14 +1,23 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import "dotenv/config";
 import { connectDB } from "./config/dbConfig";
+import { rateLimit } from "express-rate-limit";
+
 //Middleware
 import { notFound, createError } from "./middleware/errorMiddleware";
 import userRouter from "./routes/userRoutes";
 import cors from "cors";
+import { customerHeadersConfig } from "./middleware/headerMiddleware";
+import { limiterConfig } from "./config/limiterConfig";
+import { sessionConfig } from "./config/sessionConfig";
 
 const app = express();
 
+const limiter = rateLimit(limiterConfig);
+
 // Middleware Uses
+app.use(sessionConfig);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -18,7 +27,7 @@ app.use(
     })
 );
 
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/users", limiter, userRouter);
 
 // Error Middleware
 app.use(notFound);
