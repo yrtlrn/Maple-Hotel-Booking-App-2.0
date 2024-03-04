@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
-import { usePopupContext } from "../../context/PopupContext";
-import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
-import * as apiClient from "../../api/apiClient";
 import { toast } from "react-toastify";
+import {
+    toggleLoginPopup,
+    toggleSignupPopup,
+} from "../../app/slice/popupSlice";
+import { useAppDispatch } from "../../app/hook";
+import { useSignupUserMutation, useVerifyUserQuery } from "../../api/userApi";
+
 export type userSignupProps = {
     firstName: string;
     lastName: string;
@@ -13,11 +17,11 @@ export type userSignupProps = {
 };
 
 const SignupFormCard = () => {
-    const { closeSignupPopup, openLoginPopup } = usePopupContext();
+    const dispatch = useAppDispatch();
 
     const switchToLogin = () => {
-        closeSignupPopup();
-        openLoginPopup();
+        dispatch(toggleSignupPopup());
+        dispatch(toggleLoginPopup());
     };
 
     const {
@@ -27,17 +31,25 @@ const SignupFormCard = () => {
         handleSubmit,
     } = useForm<userSignupProps>();
 
-    const mutation = useMutation(apiClient.signupUser, {
-        onSuccess: () => {
-            toast("Signup Successful", { type: "success" });
-            closeSignupPopup();
-        },
-        onError: (err: Error) => {
-            toast(err.message, { type: "error" });
-        },
-    });
+    const [signUp] = useSignupUserMutation();
 
-    const onSubmit = (data: userSignupProps) => mutation.mutate(data);
+    const onSubmit = async (data: userSignupProps) => {
+        try {
+            const payload = await signUp(data).unwrap();
+            if (payload) {
+                toast((payload as { message: string }).message, {
+                    type: "success",
+                });
+                dispatch(toggleSignupPopup());
+                useVerifyUserQuery(null);
+            }
+        } catch (error) {
+            const knownError = error as {
+                data: { message: String; status: number };
+            };
+            toast(knownError.data.message, { type: "error" });
+        }
+    };
 
     return (
         <motion.section

@@ -1,26 +1,47 @@
 import { Outlet } from "react-router-dom";
-import Header from "../component/single/Header";
-import Footer from "../component/single/Footer";
-import { usePopupContext } from "../context/PopupContext";
+import Header from "../component/core/Header";
+import Footer from "../component/core/Footer";
+
+import { RootState } from "../app/store";
+import { toggleLoginPopup, toggleSignupPopup } from "../app/slice/popupSlice";
+import { AnimatePresence } from "framer-motion";
+import LoginFormCard from "../component/forms/LoginFormCard";
+import SignupFormCard from "../component/forms/SignupFormCard";
+import { useAppDispatch, useAppSelector } from "../app/hook";
 
 const MainLayout = () => {
-    const {
-        isLoginPopupOpen,
-        closeLoginPopup,
-        closeSignupPopup,
-        isBackdropOpen,
-    } = usePopupContext();
+    const isBackdropOpen = useAppSelector(
+        (state: RootState) => state.popup.blackDropDown
+    );
+
+    const isLoginPopupOpen = useAppSelector(
+        (state: RootState) => state.popup.loginPopup
+    );
+
+    const isSignupPopupOpen = useAppSelector(
+        (state: RootState) => state.popup.signupPopup
+    );
+
+    const dispatch = useAppDispatch();
 
     return (
         <section className="flex flex-col relative  min-h-screen">
             {isBackdropOpen && (
                 <div
                     className="absolute bg-black/50 w-full h-full z-20"
-                    onClick={
-                        isLoginPopupOpen ? closeLoginPopup : closeSignupPopup
+                    onClick={() =>
+                        isLoginPopupOpen
+                            ? dispatch(toggleLoginPopup())
+                            : dispatch(toggleSignupPopup())
                     }
                 />
             )}
+            <div className="absolute left-0 right-0 mx-auto w-96 mt-14 z-30">
+                <AnimatePresence mode="wait">
+                    {isLoginPopupOpen && <LoginFormCard />}
+                    {isSignupPopupOpen && <SignupFormCard />}
+                </AnimatePresence>
+            </div>
 
             <header className="border-b-2 p-2 mb-2 flex-none">
                 <Header />

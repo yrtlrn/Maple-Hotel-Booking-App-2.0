@@ -5,7 +5,7 @@ import User from "../model/userModel";
 declare module "express-session" {
     export interface SessionData {
         authorized: boolean;
-        username: string;
+        email: string;
     }
 }
 
@@ -26,6 +26,7 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
         // update session
         // auth user
         req.session.authorized = true;
+        req.session.email = email;
         res.status(200).json({
             message: "Login In Successful",
         });
@@ -51,7 +52,26 @@ const signupUser = asyncHandler(async (req: Request, res: Response) => {
         res.status(400);
         throw new Error("A problem occured when signing up!!!");
     }
+    req.session.authorized = true;
+    req.session.email = req.body.email;
     res.status(201).json({ message: "Signup Successful", user: user });
 });
 
-export { loginUser, signupUser };
+// DESC     verify if user logged in
+// MTH      GET /api/v1/users/verify
+// ACC      Private
+const verifyUser = (req: Request, res: Response) => {
+    res.status(200).json({ message: "Authorized" });
+};
+
+// DESC     logout a user
+// MTH      POST /api/v1/users/logout
+// ACC      private
+const logoutUser = (req: Request, res: Response) => {
+    req.session.destroy(() => {});
+    res.cookie("sessCookie", "", {
+        expires: new Date(0),
+    });
+    res.status(200).json({ message: "Logout Out Successful" });
+};
+export { loginUser, signupUser, verifyUser, logoutUser };

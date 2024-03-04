@@ -9,19 +9,20 @@ import {
     createRoutesFromElements,
 } from "react-router-dom";
 import MainLayout from "./layout/MainLayout.tsx";
-import { PopupProvider } from "./context/PopupContext.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClientProvider, QueryClient } from "react-query";
-import AuthCheck from "./component/single/AuthCheck.tsx";
-import VerifyPage from "./pages/VerifyPage.tsx";
+import AuthCheck from "./layout/AuthLayout.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
+import { store } from "./app/store.ts";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<MainLayout />}>
             <Route index element={<App />} />
-            <Route path="/auth" element={<AuthCheck />}>
-                <Route index element={<VerifyPage />} />
+            <Route path="/user" element={<AuthCheck />}>
+                <Route path="profile" element={<ProfilePage />} />
             </Route>
         </Route>
     )
@@ -30,7 +31,7 @@ const router = createBrowserRouter(
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: 0,
+            retry: false,
         },
     },
 });
@@ -38,10 +39,10 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <PopupProvider>
+            <Provider store={store}>
                 <RouterProvider router={router} />
                 <ToastContainer />
-            </PopupProvider>
+            </Provider>
         </QueryClientProvider>
     </React.StrictMode>
 );

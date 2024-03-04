@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
-import { usePopupContext } from "../../context/PopupContext";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
-import * as apiClient from "../../api/apiClient";
 import { toast } from "react-toastify";
+import {
+    toggleLoginPopup,
+    toggleSignupPopup,
+} from "../../app/slice/popupSlice";
+import { useLoginUserMutation, useVerifyUserQuery } from "../../api/userApi";
+import { useAppDispatch } from "../../app/hook";
+
 
 export type userLoginProps = {
     email: string;
@@ -11,11 +15,11 @@ export type userLoginProps = {
 };
 
 const LoginFormCard = () => {
-    const { closeLoginPopup, openSignupPopup } = usePopupContext();
+    const dispatch = useAppDispatch();
 
     const switchToSignup = () => {
-        closeLoginPopup();
-        openSignupPopup();
+        dispatch(toggleLoginPopup());
+        dispatch(toggleSignupPopup());
     };
 
     const {
@@ -24,18 +28,26 @@ const LoginFormCard = () => {
         handleSubmit,
     } = useForm<userLoginProps>();
 
-    const mutation = useMutation(apiClient.loginUser, {
-        onSuccess: () => {
-            toast("Login Successful", { type: "success" });
-            closeLoginPopup();
-        },
-        onError: (err: Error) => {
-            toast(err.message, { type: "error" });
-        },
-    });
+    const [loginUser] = useLoginUserMutation();
 
-    const onSubmit = (data: userLoginProps) => {
-        mutation.mutate(data);
+    const onSubmit = async (formData: userLoginProps) => {
+        try {
+            const payload = await loginUser(formData).unwrap();
+            if (payload) {
+                toast((payload as { message: string }).message, {
+                    type: "success",
+                });
+                dispatch(toggleLoginPopup());
+                useVerifyUserQuery(null)
+            }
+        } catch (error) {
+            const knownError = error as {
+                data: { message: String; status: number };
+            };
+            toast(knownError.data.message, { type: "error" });
+        }
+
+        
     };
 
     return (

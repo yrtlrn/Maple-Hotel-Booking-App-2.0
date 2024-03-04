@@ -1,7 +1,7 @@
 // @ts-ignore
 import MongoStore from "rate-limit-mongo";
 
-export  const limiterConfig = {
+export const limiterConfig = {
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // Limit each IP to 100 request per 'window' (15 mins)
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
