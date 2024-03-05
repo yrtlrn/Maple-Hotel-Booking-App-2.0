@@ -5,13 +5,13 @@ const SearchFormCard = () => {
     
 
     return (
-        <form className="p-2 form-control text-center">
+        <form className="p-2 form-control text-center bg-maple dark:bg-black border-t-2 border-b-2">
             <section className="grid grid-rows-1 grid-cols-5 gap-1 ">
                 <label className="flex flex-col">
                     Destination
                     <input
                         type="text"
-                        className="input input-bordered"
+                        className="input input-bordered "
                         maxLength={20}
                         required
                     />
@@ -53,7 +53,7 @@ const SearchFormCard = () => {
                 </label>
             </section>
             <section className="flex justify-center">
-                <button type="submit" className="btn mt-2 w-1/2  text-xl">
+                <button type="submit" className="btn mt-2 w-1/2 text-xl  text-white">
                     Search
                 </button>
             </section>

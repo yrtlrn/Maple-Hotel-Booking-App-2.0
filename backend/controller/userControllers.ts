@@ -74,4 +74,24 @@ const logoutUser = (req: Request, res: Response) => {
     });
     res.status(200).json({ message: "Logout Out Successful" });
 };
-export { loginUser, signupUser, verifyUser, logoutUser };
+
+// DESC     get user data for profile page
+// MTH      POST /api/v1/users/profile
+// ACC      private
+const userDataProfile = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findOne(
+        { email: req.session.email },
+        "email firstName lastName"
+    );
+    if (!user) {
+        res.status(404);
+        throw new Error("user does not exist");
+    }
+    res.status(200).json({
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+    });
+});
+
+export { loginUser, signupUser, verifyUser, logoutUser, userDataProfile };

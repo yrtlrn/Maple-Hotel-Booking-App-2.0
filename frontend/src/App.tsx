@@ -13,10 +13,10 @@ export default function App() {
 
     return (
         <section className=" w-full h-full flex flex-col relative">
-            <div className="h-full w-full">
+            <div className=" w-full">
                 <Hero />
             </div>
-            <div className=" bg-maple/80  absolute top-0 bottom-0 m-auto w-full h-fit">
+            <div className="w-full mt-2">
                 <SearchFormCard />
             </div>
         </section>

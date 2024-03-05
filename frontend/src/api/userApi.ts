@@ -45,6 +45,13 @@ export const userApi = createApi({
                 credentials: "include",
             }),
         }),
+        profileData: builder.query<null,null>({
+            query: () => ({
+                url: "/profile",
+                method: "GET",
+                credentials: "include"
+            })
+        })
     }),
 });
 
@@ -52,5 +59,6 @@ export const {
     useLoginUserMutation,
     useSignupUserMutation,
     useVerifyUserQuery,
-    useLogoutUserMutation
+    useLogoutUserMutation,
+    useProfileDataQuery
 } = userApi;

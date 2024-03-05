@@ -7,6 +7,8 @@ import {
 } from "../../app/slice/popupSlice";
 import { useAppDispatch } from "../../app/hook";
 import { useSignupUserMutation, useVerifyUserQuery } from "../../api/userApi";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export type userSignupProps = {
     firstName: string;
@@ -22,6 +24,30 @@ const SignupFormCard = () => {
     const switchToLogin = () => {
         dispatch(toggleSignupPopup());
         dispatch(toggleLoginPopup());
+    };
+
+    const [passwordVisibility, setPasswordVisibility] = useState(true);
+    const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
+        useState(true);
+
+    const switchVisibility = () => {
+        const elem = document.getElementById("password");
+        if (passwordVisibility) {
+            elem?.setAttribute("type", "text");
+        } else {
+            elem?.setAttribute("type", "password");
+        }
+        setPasswordVisibility((prev) => !prev);
+    };
+
+    const cswitchVisibility = () => {
+        const elem = document.getElementById("confirmPassword");
+        if (confirmPasswordVisibility) {
+            elem?.setAttribute("type", "text");
+        } else {
+            elem?.setAttribute("type", "password");
+        }
+        setConfirmPasswordVisibility((prev) => !prev);
     };
 
     const {
@@ -124,6 +150,7 @@ const SignupFormCard = () => {
                     <input
                         type="password"
                         className="grow overflow-hidden"
+                        id="password"
                         required
                         {...register("password", {
                             required:
@@ -131,6 +158,11 @@ const SignupFormCard = () => {
                             minLength: 6,
                         })}
                     />
+                    {passwordVisibility ? (
+                        <FaEye onClick={() => switchVisibility()} />
+                    ) : (
+                        <FaEyeSlash onClick={() => switchVisibility()} />
+                    )}
                 </label>
                 {errors.password && (
                     <span className="text-sm text-red-500">
@@ -142,6 +174,7 @@ const SignupFormCard = () => {
                     <input
                         type="password"
                         className="grow overflow-hidden"
+                        id="confirmPassword"
                         required
                         {...register("confirmPassword", {
                             validate: (val) => {
@@ -151,6 +184,11 @@ const SignupFormCard = () => {
                             },
                         })}
                     />
+                    {confirmPasswordVisibility ? (
+                        <FaEye onClick={() => cswitchVisibility()} />
+                    ) : (
+                        <FaEyeSlash onClick={() => cswitchVisibility()} />
+                    )}
                 </label>
                 {errors.confirmPassword && (
                     <p className="text-sm text-red-500">

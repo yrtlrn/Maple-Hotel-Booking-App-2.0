@@ -46,7 +46,7 @@ const MainLayout = () => {
             <header className="border-b-2 p-2 mb-2 flex-none">
                 <Header />
             </header>
-            <main className="container mx-auto flex flex-1 mb-4  ">
+            <main className="container mx-auto flex flex-1 mb-4   ">
                 <section className="flex-1 ">
                     <Outlet />
                 </section>

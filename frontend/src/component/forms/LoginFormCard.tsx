@@ -7,7 +7,8 @@ import {
 } from "../../app/slice/popupSlice";
 import { useLoginUserMutation, useVerifyUserQuery } from "../../api/userApi";
 import { useAppDispatch } from "../../app/hook";
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
 export type userLoginProps = {
     email: string;
@@ -16,6 +17,18 @@ export type userLoginProps = {
 
 const LoginFormCard = () => {
     const dispatch = useAppDispatch();
+
+    const [passwordVisibility, setPasswordVisibility] = useState(true);
+
+    const switchVisibility = () => {
+        const elem = document.getElementById("password");
+        if (passwordVisibility) {
+            elem?.setAttribute("type", "text");
+        } else {
+            elem?.setAttribute("type", "password");
+        }
+        setPasswordVisibility((prev) => !prev);
+    };
 
     const switchToSignup = () => {
         dispatch(toggleLoginPopup());
@@ -38,7 +51,7 @@ const LoginFormCard = () => {
                     type: "success",
                 });
                 dispatch(toggleLoginPopup());
-                useVerifyUserQuery(null)
+                useVerifyUserQuery(null);
             }
         } catch (error) {
             const knownError = error as {
@@ -46,8 +59,6 @@ const LoginFormCard = () => {
             };
             toast(knownError.data.message, { type: "error" });
         }
-
-        
     };
 
     return (
@@ -83,6 +94,7 @@ const LoginFormCard = () => {
                     <input
                         type="password"
                         className="grow overflow-hidden"
+                        id="password"
                         required
                         {...register("password", {
                             required:
@@ -90,6 +102,11 @@ const LoginFormCard = () => {
                             minLength: 6,
                         })}
                     />
+                    {passwordVisibility ? (
+                        <FaEye onClick={() => switchVisibility()} />
+                    ) : (
+                        <FaEyeSlash onClick={() => switchVisibility()} />
+                    )}
                 </label>
                 {errors.password && (
                     <span className="text-sm text-red-500">
