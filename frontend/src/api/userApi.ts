@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { userLoginProps } from "../component/forms/LoginFormCard";
 
 import { userSignupProps } from "../component/forms/SignupFormCard";
+import { profileData, updateProps } from "../pages/ProfilePage";
 
 export const userApi = createApi({
     reducerPath: "userApi",
@@ -45,13 +46,24 @@ export const userApi = createApi({
                 credentials: "include",
             }),
         }),
-        profileData: builder.query<null,null>({
+        profileData: builder.query<profileData, null>({
             query: () => ({
                 url: "/profile",
                 method: "GET",
-                credentials: "include"
-            })
-        })
+                credentials: "include",
+            }),
+        }),
+        updateUser: builder.mutation<null, updateProps>({
+            query: (formData: updateProps) => ({
+                url: "/update",
+                method: "POST",
+                credentials: "include",
+                body: formData,
+                headers: {
+                    "content-type": "application/json",
+                },
+            }),
+        }),
     }),
 });
 
@@ -60,5 +72,6 @@ export const {
     useSignupUserMutation,
     useVerifyUserQuery,
     useLogoutUserMutation,
-    useProfileDataQuery
+    useProfileDataQuery,
+    useUpdateUserMutation
 } = userApi;

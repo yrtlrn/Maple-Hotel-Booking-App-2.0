@@ -21,14 +21,11 @@ export const customerHeadersConfig = async (
     const newHeader: { [k: string]: any } = {};
 
     getHeaders.map((header: { name: string; value: string }) => {
-        // if (header.name === "Clear-Site-Data") {
-        //     return;
-        // } else if (header.name === "Cross-Origin-Resource-Policy") {
-        //     return;
-        // } else {
-        //     newHeader[`${header.name}`] = header.value;
-        // }
-        newHeader[`${header.name}`] = header.value;
+        if (header.name === "Clear-Site-Data") {
+            return;
+        } else {
+            newHeader[`${header.name}`] = header.value;
+        }
     });
 
     res.set(newHeader ? newHeader : "");

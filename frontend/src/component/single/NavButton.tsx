@@ -105,6 +105,14 @@ const NavButton = () => {
                                     <p>Log Out</p>
                                 )}
                             </li>
+
+                            {isLoggedIn === false ? (
+                                ""
+                            ) : (
+                                <li className="p-2 border-b-2 border-b-slate-600 hover:bg-slate-800 transition ease-in-out dark:border-white hover:scale-105  hover:cursor-pointer">
+                                    <Link to="/user/hotel">Hotels</Link>
+                                </li>
+                            )}
                         </ul>
                     </motion.nav>
                 )}
@@ -113,3 +121,10 @@ const NavButton = () => {
     );
 };
 export default NavButton;
+
+
+/*
+F 
+*/
+
+

@@ -2,11 +2,10 @@ import { format } from "date-fns";
 
 const SearchFormCard = () => {
     const todayDate = format(new Date(), "MM/dd/yyyy");
-    
 
     return (
         <form className="p-2 form-control text-center bg-maple dark:bg-black border-t-2 border-b-2">
-            <section className="grid grid-rows-1 grid-cols-5 gap-1 ">
+            <section className="grid grid-rows-5 grid-cols-1 md:grid-rows-1 md:grid-cols-5 gap-3 md:gap-1 ">
                 <label className="flex flex-col">
                     Destination
                     <input
@@ -53,7 +52,10 @@ const SearchFormCard = () => {
                 </label>
             </section>
             <section className="flex justify-center">
-                <button type="submit" className="btn mt-2 w-1/2 text-xl  text-white">
+                <button
+                    type="submit"
+                    className="btn mt-2 w-1/2 text-xl  text-white"
+                >
                     Search
                 </button>
             </section>

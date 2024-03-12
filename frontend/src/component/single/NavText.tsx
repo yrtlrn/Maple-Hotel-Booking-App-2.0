@@ -34,7 +34,7 @@ const NavText = () => {
     return (
         <>
             <button
-                className="btn text-xl hidden md:inline text-white bg-transparent hover:bg-maple/10 dark:bg-black dark:border-white "
+                className="btn text-xl hidden md:inline text-white bg-transparent border-white hover:bg-maple/10 dark:bg-black dark:border-white "
                 onClick={() =>
                     isLoggedIn === false ? dispatch(toggleLoginPopup()) : ""
                 }
@@ -45,8 +45,17 @@ const NavText = () => {
                     <Link to="/user/profile">Profile</Link>
                 )}
             </button>
+
+            {isLoggedIn === false ? (
+                ""
+            ) : (
+                <button className="btn text-xl hidden md:inline text-white border-white bg-transparent hover:bg-maple/10 dark:bg-black dark:border-white">
+                    <Link to="/user/hotel">My Hotels</Link>
+                </button>
+            )}
+
             <button
-                className="btn text-xl hidden md:inline text-white bg-transparent hover:bg-maple/10 dark:bg-black dark:border-white"
+                className="btn text-xl hidden md:inline text-white bg-transparent border-white hover:bg-maple/10 dark:bg-black dark:border-white"
                 onClick={() =>
                     isLoggedIn === false
                         ? dispatch(toggleSignupPopup())

@@ -16,6 +16,8 @@ import AuthCheck from "./layout/AuthLayout.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import { store } from "./app/store.ts";
 import { Provider } from "react-redux";
+import HotelPage from "./pages/HotelPage.tsx";
+import AddHotelForm from "./component/forms/AddHotelForm.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -23,6 +25,9 @@ const router = createBrowserRouter(
             <Route index element={<App />} />
             <Route path="/user" element={<AuthCheck />}>
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="hotel" element={<HotelPage />} />
+
+                <Route path="hotel/add" element={<AddHotelForm />} />
             </Route>
         </Route>
     )

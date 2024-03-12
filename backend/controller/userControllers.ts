@@ -94,4 +94,67 @@ const userDataProfile = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
-export { loginUser, signupUser, verifyUser, logoutUser, userDataProfile };
+// DESC     update user data
+// MTH      POST /api/v1/users/update
+// ACC      private
+const updateUserData = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findOne({
+        email: req.session.email,
+    });
+
+    if (!user) {
+        res.status(404);
+        throw new Error("user does not exist");
+    }
+
+    const { firstName, lastName, email, currentPassword, newPassword } =
+        req.body;
+
+    if (await user.matchPassword(currentPassword)) {
+        const duplicateEmailCheck = await User.findOne({
+            email: email,
+            _id: { $ne: user._id },
+        });
+        if (duplicateEmailCheck) {
+            res.status(422).json({ message: "Please use a different email" });
+        }
+
+        let updateData = {};
+
+        if (newPassword) {
+            updateData = {
+                firstName,
+                lastName,
+                email,
+                password: newPassword,
+            };
+        } else {
+            updateData = {
+                firstName,
+                lastName,
+                email,
+            };
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(user._id, updateData, {
+            new: true,
+            runValidators: true,
+        });
+        if (updatedUser) {
+            req.session.email = email;
+            res.status(200).json({ message: "Profile Update Successful" });
+        } else {
+            res.status(400).json({ message: "Something went wrong" });
+        }
+    } else {
+        res.status(422).json({ message: "Incorrect Password" });
+    }
+});
+export {
+    loginUser,
+    signupUser,
+    verifyUser,
+    logoutUser,
+    userDataProfile,
+    updateUserData,
+};

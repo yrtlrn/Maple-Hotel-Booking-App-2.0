@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useProfileDataQuery } from "../api/userApi";
+import { useProfileDataQuery, useUpdateUserMutation } from "../api/userApi";
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
-export type profilePageProps = {
+export type updateProps = {
     firstName: String;
     lastName: String;
     email: String;
@@ -11,24 +12,29 @@ export type profilePageProps = {
     newPassword: String;
 };
 
+export type profileData = {
+    email: string;
+    firstName: string;
+    lastName: string;
+};
+
 const ProfilePage = () => {
-    const { register, reset } = useForm<profilePageProps>();
+    const { register, reset, handleSubmit } = useForm<updateProps>();
     const { isSuccess, data } = useProfileDataQuery(null);
     const [passwordVisibility, setPasswordVisibility] = useState(true);
     const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
         useState(true);
+
     const fillInputs = () => {
-        const modifiedData = data as unknown as {
-            email: string;
-            firstName: string;
-            lastName: string;
-        };
+        const modifiedData = data as unknown as profileData;
         if (isSuccess) {
             reset(modifiedData);
 
             return;
         }
     };
+
+    const [updateUser] = useUpdateUserMutation();
 
     const switchVisibility = () => {
         const elem = document.getElementById("currentPassword");
@@ -50,12 +56,31 @@ const ProfilePage = () => {
         setConfirmPasswordVisibility((prev) => !prev);
     };
 
+    const onSubmit = async (formData: updateProps) => {
+        try {
+            const payload = await updateUser(formData).unwrap();
+            if (payload) {
+                toast((payload as { message: string }).message, {
+                    type: "success",
+                });
+            }
+        } catch (error) {
+            const knownError = error as {
+                data: { message: String; status: number };
+            };
+            toast(knownError.data.message, { type: "error" });
+        }
+    };
+
     useEffect(() => {
         fillInputs();
     }, [data]);
 
     return (
-        <form className="flex flex-col gap-2 justify-center items-center  h-full">
+        <form
+            className="flex flex-col gap-2 justify-center items-center  h-full"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <section className="grid grid-cols-2 grid-row-5 gap-2 h-full mt-12 mr-2">
                 <label
                     htmlFor="firstName"
@@ -75,6 +100,7 @@ const ProfilePage = () => {
                                 message: "Must be at least 3 characters",
                             },
                         })}
+                        required
                     />
                 </div>
                 <label
@@ -95,6 +121,7 @@ const ProfilePage = () => {
                                 message: "Must be at least 3 characters",
                             },
                         })}
+                        required
                     />
                 </div>
                 <label
@@ -115,6 +142,7 @@ const ProfilePage = () => {
                                 message: "Must be at least 3 characters",
                             },
                         })}
+                        required
                     />
                 </div>
                 <label
@@ -135,6 +163,7 @@ const ProfilePage = () => {
                                 message: "Must be at least 6 characters",
                             },
                         })}
+                        required
                     />
                     <div className="absolute right-2">
                         {passwordVisibility ? (

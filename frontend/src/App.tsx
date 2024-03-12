@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Hero from "./component/core/Hero";
-import SearchFormCard from "./component/forms/SearchFormCard";
+import SearchFormCard from "./component/forms/SearchForm";
 
 export default function App() {
     useEffect(() => {

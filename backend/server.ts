@@ -6,6 +6,7 @@ import { rateLimit } from "express-rate-limit";
 //Middleware
 import { notFound, createError } from "./middleware/errorMiddleware";
 import userRouter from "./routes/userRoutes";
+import hotelRouter from "./routes/hotelRoutes";
 import cors from "cors";
 import { customerHeadersConfig } from "./middleware/headerMiddleware";
 import { limiterConfig } from "./config/limiterConfig";
@@ -17,6 +18,7 @@ const limiter = rateLimit(limiterConfig);
 
 // Middleware Uses
 app.use(sessionConfig);
+app.use(customerHeadersConfig);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,6 +30,7 @@ app.use(
 );
 
 app.use("/api/v1/users", limiter, userRouter);
+app.use("/api/v1/hotels", limiter, hotelRouter);
 
 // Error Middleware
 app.use(notFound);
