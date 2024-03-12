@@ -6,13 +6,14 @@ import {
 } from "../../app/slice/popupSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import { getUserAuth } from "../../app/slice/userSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "../../api/userApi";
 import { toast } from "react-toastify";
 
 const NavButton = () => {
     const menuOpen = useAppSelector((state) => state.popup.menuOpen);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
 
     const isLoggedIn = useAppSelector(getUserAuth);
 
@@ -37,6 +38,7 @@ const NavButton = () => {
                 toast((payload as { message: string }).message, {
                     type: "success",
                 });
+                navigate("/")
             }
         } catch (error) {
             const knownError = error as {

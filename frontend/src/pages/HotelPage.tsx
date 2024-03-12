@@ -1,21 +1,33 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetHotelsQuery } from "../api/hotelApi";
-import AddHotelForm from "../component/forms/AddHotelForm";
 import HotelCard from "../component/single/HotelCard";
+import { Link } from "react-router-dom";
 
 const AddHotelPage = () => {
-    
-    useGetHotelsQuery(null);
-
-    const { isSuccess, data } = useGetHotelsQuery(null);
+    const [page, setPage] = useState(1);
+    const getData = useGetHotelsQuery({ page });
+    const { isSuccess, data } = useGetHotelsQuery({ page });
 
     useEffect(() => {
-        data;
-    }, [data]);
+        getData;
+    }, []);
 
     return (
         <section>
-            {isSuccess ? <HotelCard hotelData={data} /> : <AddHotelForm />}
+            <div className="flex flex-row justify-between">
+                <h1 className="font-bold text-3xl">My Hotels</h1>
+                <Link
+                    to="add"
+                    className="btn text-2xl bg-transparent text-white border-white hover:bg-transparent"
+                >
+                    Add Hotel
+                </Link>
+            </div>
+            {isSuccess ? (
+                <HotelCard hotelData={data} page={page} setPage={setPage} />
+            ) : (
+                <div>User does not have any hotels</div>
+            )}
         </section>
     );
 };

@@ -4,25 +4,53 @@ import { hotelType } from "../../../backend/shared/type";
 export const hotelApi = createApi({
     reducerPath: "hotelApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000/api/v1/hotels",
+        baseUrl: "http://localhost:3000/api/v1/",
     }),
     endpoints: (builder) => ({
         addHotel: builder.mutation<null, FormData>({
             query: (data: FormData) => ({
-                url: "/",
+                url: "users/hotels",
                 method: "POST",
                 credentials: "include",
                 body: data,
             }),
         }),
-        getHotels: builder.query<Array<hotelType>, null>({
-            query: () => ({
-                url: "/",
-                method: "GET",
-                credentials: "include",
-            }),
+        getHotels: builder.query<
+            {
+                hotels: Array<hotelType>;
+                pagination: { currPage: number; totalPage: number };
+            },
+            { page: number }
+        >({
+            query: (args) => {
+                const { page } = args;
+                return {
+                    url: "users/hotels",
+                    method: "GET",
+                    credentials: "include",
+                    params: { page },
+                };
+            },
+        }),
+        getAllHotels: builder.query<
+            {
+                hotels: Array<hotelType>;
+                pagination: { currPage: number; totalPage: number };
+            },
+            { page: number }
+        >({
+            query: (args) => {
+                const { page } = args;
+                return {
+                    url: "hotels/search",
+                    method: "GET",
+                    credentials: "include",
+                    params: { page },
+                };
+            },
         }),
     }),
 });
 
-export const { useAddHotelMutation, useGetHotelsQuery } = hotelApi;
+export const { useAddHotelMutation, useGetHotelsQuery, useGetAllHotelsQuery } =
+    hotelApi;

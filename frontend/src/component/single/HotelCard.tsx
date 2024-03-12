@@ -1,39 +1,63 @@
 import { hotelType } from "../../../../backend/shared/type";
 import { BsMap, BsBuilding } from "react-icons/bs";
 import { BiStar, BiMoney, BiHotel } from "react-icons/bi";
-import { Link } from "react-router-dom";
-
 
 type HotelCardProps = {
-    hotelData: Array<hotelType>;
+    hotelData: {
+        hotels: Array<hotelType>;
+        pagination: { currPage: number; totalPage: number };
+    };
+    page: number;
+    setPage: (page: number) => void;
 };
 
-const HotelCard = ({ hotelData }: HotelCardProps) => {
+const HotelCard = ({ hotelData, setPage, page }: HotelCardProps) => {
+    const data = hotelData.hotels;
 
-    
+    const changePage = (newPage: number) => {
+        if (setPage) {
+            setPage(newPage);
+        }
+    };
 
     return (
         <section className="flex flex-col gap-2">
-            <div className="flex flex-row justify-between">
-                <h1 className="font-bold text-3xl">My Hotels</h1>
-                <Link
-                    to="add"
-                    className="btn text-2xl bg-transparent text-white border-white hover:bg-transparent"
-                >
-                    Add Hotel
-                </Link>
+            <div className="join flex justify-center gap-2">
+                {Array.from(
+                    { length: hotelData.pagination.totalPage },
+                    (_item, index) => (
+                        <button
+                            className={`joing-item btn ${
+                                page === index + 1
+                                    ? "btn-active bg-black"
+                                    : "bg-gray-800"
+                            }`}
+                            key={index}
+                            onClick={() => changePage(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    )
+                )}
             </div>
-            {hotelData.map((hotel) => (
-                <div className="bg-slate-500 rounded-md p-2 grid grid-cols-1 grid-rows-2 md:grid md:grid-cols-[2fr_3fr] md:grid-rows-1">
-                    <img src={hotel.images[0]} className="object-cover" />
+
+            {data.map((hotel) => (
+                <div
+                    className="bg-slate-500 rounded-md p-2  grid grid-cols-1 grid-rows-[2fr_3fr] md:grid md:grid-cols-[2fr_3fr] md:grid-rows-1 md:items-center"
+                    key={hotel.name}
+                >
+                    <img
+                        src={hotel.images[0]}
+                        className="object-cover w-full max-h-[300px] md:max-h-[500px]"
+                    />
                     <div className="pl-2 flex flex-col justify-between">
                         <div className="flex flex-col gap-3 mb-3">
                             <h1 className="text-3xl">{hotel.name}</h1>
                             <div className="flex flex-row justify-star items-center">
                                 {Array.from(
                                     { length: hotel.starRating },
-                                    () => (
-                                        <BiStar />
+                                    (_item, index) => (
+                                        <BiStar key={index} />
                                     )
                                 )}
                             </div>
@@ -45,7 +69,7 @@ const HotelCard = ({ hotelData }: HotelCardProps) => {
                                 {Array.from(
                                     hotel.facilities,
                                     (facility, index) => (
-                                        <span className="">
+                                        <span key={index}>
                                             {index < 3
                                                 ? index === 2
                                                     ? facility + ""
@@ -101,9 +125,25 @@ const HotelCard = ({ hotelData }: HotelCardProps) => {
                     </div>
                 </div>
             ))}
+            <div className="join flex justify-center gap-2">
+                {Array.from(
+                    { length: hotelData.pagination.totalPage },
+                    (_item, index) => (
+                        <button
+                            className={`joing-item btn ${
+                                page === index + 1
+                                    ? "btn-active bg-black"
+                                    : "bg-gray-800"
+                            }`}
+                            key={index}
+                            onClick={() => changePage(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    )
+                )}
+            </div>
         </section>
     );
 };
 export default HotelCard;
-
-

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { hotelFacilities, hotelTypes } from "../../constant/variables";
-import { useAddHotelMutation} from "../../api/hotelApi";
+import { useAddHotelMutation } from "../../api/hotelApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -59,7 +59,6 @@ const AddHotelForm = () => {
                     type: "success",
                 });
                 navigate("/user/hotel");
-                
             }
         } catch (error) {
             const knownError = error as {
@@ -74,6 +73,7 @@ const AddHotelForm = () => {
             className="flex flex-col gap-2 justify-center items-center  h-full w-full"
             onSubmit={handleSubmit(onSubmit)}
             encType="multipart/form-data"
+            noValidate
         >
             {/* Name */}
             <section className="w-1/2">
@@ -229,7 +229,9 @@ const AddHotelForm = () => {
                                 value={type}
                                 className="radio hidden"
                                 required
-                                {...register("type")}
+                                {...register("type", {
+                                    required: "Type is required",
+                                })}
                             />
                         </label>
                     ))}
@@ -263,10 +265,13 @@ const AddHotelForm = () => {
                                 className="hidden"
                                 {...register("facilities", {
                                     validate: () => {
-                                        if (watch("facilities").length < 1) {
+                                        if (
+                                            watch("facilities").length < 1 ||
+                                            !watch("facilities")
+                                        ) {
                                             return "At least select one";
                                         }
-                                        return true;
+                                            return true;
                                     },
                                 })}
                             />

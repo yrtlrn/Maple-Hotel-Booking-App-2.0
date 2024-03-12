@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import {
     toggleLoginPopup,
@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 const NavText = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
 
     const isLoggedIn = useAppSelector(getUserAuth);
 
@@ -22,6 +23,7 @@ const NavText = () => {
                 toast((payload as { message: string }).message, {
                     type: "success",
                 });
+                navigate("/")
             }
         } catch (error) {
             const knownError = error as {
