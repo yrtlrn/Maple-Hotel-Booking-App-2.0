@@ -37,15 +37,15 @@ export const hotelApi = createApi({
                 hotels: Array<hotelType>;
                 pagination: { currPage: number; totalPage: number };
             },
-            { page: number }
+            { page: number, params: {} }
         >({
             query: (args) => {
-                const { page } = args;
+                const { page, params } = args;
                 return {
                     url: "hotels/search",
                     method: "GET",
                     credentials: "include",
-                    params: { page },
+                    params: { page, params  },
                 };
             },
         }),

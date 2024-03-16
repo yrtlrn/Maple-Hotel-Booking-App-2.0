@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { userLoginProps } from "../component/forms/LoginFormCard";
+import { userLoginProps } from "../component/forms/LoginForm";
 
-import { userSignupProps } from "../component/forms/SignupFormCard";
+import { userSignupProps } from "../component/forms/SignupForm";
 import { profileData, updateProps } from "../pages/ProfilePage";
 
 export const userApi = createApi({
@@ -73,5 +73,5 @@ export const {
     useVerifyUserQuery,
     useLogoutUserMutation,
     useProfileDataQuery,
-    useUpdateUserMutation
+    useUpdateUserMutation,
 } = userApi;

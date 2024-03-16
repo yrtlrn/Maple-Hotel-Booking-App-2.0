@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
-
 import { Link } from "react-router-dom";
 import { CiDark } from "react-icons/ci";
-import NavButton from "../single/NavButton";
 import { useVerifyUserQuery } from "../../api/userApi";
-import NavText from "../single/NavText";
+import Nav from "../single/Nav";
 
 const Header = () => {
     useVerifyUserQuery(null);
@@ -22,7 +20,7 @@ const Header = () => {
     };
 
     return (
-        <section className="container mx-auto flex items-center justify-between">
+        <section className="container mx-auto flex items-center justify-between ">
             <Link to="/">
                 <motion.h1
                     className="text-3xl font-bold"
@@ -36,12 +34,9 @@ const Header = () => {
                 <button onClick={changeTheme}>
                     <CiDark size={30} />
                 </button>
-                <div className="flex gap-2">
-                    <NavText />
-                </div>
-                <div className="relative flex flex-col md:hidden">
-                    <NavButton />
-                </div>
+                <nav>
+                    <Nav />
+                </nav>
             </section>
         </section>
     );

@@ -5,8 +5,8 @@ import Footer from "../component/core/Footer";
 import { RootState } from "../app/store";
 import { toggleLoginPopup, toggleSignupPopup } from "../app/slice/popupSlice";
 import { AnimatePresence } from "framer-motion";
-import LoginFormCard from "../component/forms/LoginFormCard";
-import SignupFormCard from "../component/forms/SignupFormCard";
+import LoginFormCard from "../component/forms/LoginForm";
+import SignupFormCard from "../component/forms/SignupForm";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 
 const MainLayout = () => {
@@ -43,7 +43,7 @@ const MainLayout = () => {
                 </AnimatePresence>
             </div>
 
-            <header className="border-b-2 p-2 mb-2 flex-none">
+            <header className="border-b-2 p-2 mb-2 flex-none sticky top-0 z-10 bg-orange-400 dark:bg-black">
                 <Header />
             </header>
             <main className="container mx-auto flex flex-1 mb-4   ">

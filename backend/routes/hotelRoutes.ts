@@ -4,6 +4,6 @@ import { getAllHotels } from "../controller/hotelControllers";
 
 const router = express.Router();
 
-router.get("/search", authenticateUser, getAllHotels);
+router.get("/search", getAllHotels);
 
 export default router;

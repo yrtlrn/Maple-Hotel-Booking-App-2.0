@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGetHotelsQuery } from "../api/hotelApi";
-import HotelCard from "../component/single/HotelCard";
+import HotelCard from "../component/cards/HotelCard";
 import { Link } from "react-router-dom";
 
 const AddHotelPage = () => {

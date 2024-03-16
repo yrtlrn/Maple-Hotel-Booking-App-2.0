@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type PopupSliceProps = {
     blackDropDown: boolean;
@@ -29,8 +29,8 @@ export const popupSlice = createSlice({
             state.signupPopup = !state.signupPopup;
             state.blackDropDown = !state.blackDropDown
         },
-        toggleMenuOpen: (state) => {
-            state.menuOpen = !state.menuOpen;
+        toggleMenuOpen: (state, action: PayloadAction<boolean>) => {
+            state.menuOpen = action.payload;
         },
     },
 });

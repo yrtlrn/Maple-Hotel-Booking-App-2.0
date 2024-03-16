@@ -271,7 +271,7 @@ const AddHotelForm = () => {
                                         ) {
                                             return "At least select one";
                                         }
-                                            return true;
+                                        return true;
                                     },
                                 })}
                             />
