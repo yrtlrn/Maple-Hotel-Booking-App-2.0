@@ -1,7 +1,7 @@
 import { hotelType } from "../../../../backend/shared/type";
 import { BsMap, BsBuilding } from "react-icons/bs";
 import { BiStar, BiMoney, BiHotel } from "react-icons/bi";
-import Filter from "../forms/FilterForm";
+
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import { changePageNumber } from "../../app/slice/hotelSlice";
 
@@ -44,10 +44,11 @@ const HotelCard = ({ hotelData }: HotelCardProps) => {
                 )}
             </div>
 
-            <section className="grid grid-cols-[1fr_4fr] md:grid-cols-[1fr_3fr] gap-2 items-start">
-                <div className="sticky top-20">
+            <section >
+                {/* className="grid grid-cols-[1fr_4fr] md:grid-cols-[1fr_3fr] gap-2 items-start" */}
+                {/* <div className="sticky top-20">
                     <Filter />
-                </div>
+                </div> */}
 
                 {/* Hotel Card */}
                 <div className="flex flex-col gap-2">

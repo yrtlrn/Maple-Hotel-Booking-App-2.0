@@ -37,7 +37,10 @@ export const hotelApi = createApi({
                 hotels: Array<hotelType>;
                 pagination: { currPage: number; totalPage: number };
             },
-            { page: number, params: {} }
+            {
+                page: number;
+                params: { stars: number; type: string; facilities: string[] };
+            }
         >({
             query: (args) => {
                 const { page, params } = args;
@@ -45,7 +48,7 @@ export const hotelApi = createApi({
                     url: "hotels/search",
                     method: "GET",
                     credentials: "include",
-                    params: { page, params  },
+                    params: { page, ...params },
                 };
             },
         }),

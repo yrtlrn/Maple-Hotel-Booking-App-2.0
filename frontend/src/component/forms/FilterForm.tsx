@@ -1,24 +1,19 @@
-import { useEffect, useState } from "react";
 import { hotelFacilities, hotelTypes } from "../../constant/variables";
-import { useAppDispatch } from "../../app/hook";
-import { addParams } from "../../app/slice/hotelSlice";
 
-export type FilterFormProps = {
-    stars: number;
-    type: string;
-    facilities: [string];
+type FilterFormProps = {
+    setStars: (arg0: number) => void;
+    setType: (arg0: string) => void;
+    facilities: string[];
+    setFacilities: (arg0: string[]) => void;
 };
 
-const FilterForm = () => {
-    const [stars, setStars] = useState(0);
-    const [type, setType] = useState("All");
-    const [facilities, setFacilities] = useState([""]);
-
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(addParams({ stars, type, facilities }));
-    }, [stars, type, facilities]);
+const FilterForm = ({
+    setStars,
+    setType,
+    facilities,
+    setFacilities,
+}: FilterFormProps) => {
+    
 
     return (
         <section className="bg-orange-300 ">

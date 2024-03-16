@@ -1,9 +1,10 @@
-import express, { Request, Response } from "express";
-import { authenticateUser } from "../middleware/authMiddleware";
+import express from "express";
+
 import { getAllHotels } from "../controller/hotelControllers";
+import { getAllHotelValidator } from "../middleware/validators/hotelValidators";
 
 const router = express.Router();
 
-router.get("/search", getAllHotels);
+router.get("/search",getAllHotelValidator, getAllHotels);
 
 export default router;
