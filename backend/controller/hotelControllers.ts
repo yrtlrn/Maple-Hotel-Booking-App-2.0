@@ -32,8 +32,8 @@ const getAllHotels = asyncHandler(async (req: Request, res: Response) => {
         filterOptions = { ...filterOptions, facilities: { $in: [facilities] } };
         filterUsed = true;
     }
-
     const hotels = await Hotel.find(filterOptions).skip(skip).limit(5);
+
     if (!hotels) {
         res.status(404);
         throw new Error("No Hotels Found");
@@ -42,6 +42,8 @@ const getAllHotels = asyncHandler(async (req: Request, res: Response) => {
     const hotelLength = filterUsed
         ? hotels.length
         : await Hotel.countDocuments();
+
+    
 
     res.status(200).json({
         hotels,

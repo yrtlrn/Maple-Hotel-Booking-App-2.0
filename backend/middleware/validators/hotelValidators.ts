@@ -40,7 +40,6 @@ const getAllHotelValidator = [
     query("facilities").optional({ values: "falsy" }).escape(),
     (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
-        console.log(errors);
         if (!errors.isEmpty()) {
             res.status(422).json({
                 message: "Validation Error",

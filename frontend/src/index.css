@@ -2,22 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
-    html {
-        font-family: "Nunito", sans-serif;
-    }
-}
-
-@layer components {
-    .videoPlay {
-        background-image: url("assets/Hotel_1_Vid.mp4");
-    }
+  html {
+    font-family: "Nunito", sans-serif;
+  }
 }
 
 @layer utilities {
-    .main-background {
-        background-color: #c46316
-    }
+  .main-background {
+    background-color: #c46316;
+  }
 }
